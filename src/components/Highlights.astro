@@ -1,0 +1,133 @@
+---
+import { highlights } from '../data/content';
+---
+
+<section class="hl" id="highlights">
+  <div class="shell">
+    <div class="hl__head">
+      <span class="eyebrow" data-reveal>Selected Builds</span>
+      <h2 class="hl__title display" data-reveal>Things I made<br />that mattered</h2>
+    </div>
+
+    <div class="hl__grid">
+      {highlights.map((h) => (
+        <article class="hl__card" data-reveal data-tilt>
+          <div class="hl__card-top">
+            <span class="hl__no mono">{h.no}</span>
+            <span class="hl__kicker mono">{h.kicker}</span>
+          </div>
+          <h3 class="hl__name display">{h.title}</h3>
+          <p class="hl__body">{h.body}</p>
+          <div class="hl__tags">
+            {h.tags.map((t) => <span class="hl__tag">{t}</span>)}
+          </div>
+          <div class="hl__sheen" aria-hidden="true"></div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hl {
+    padding-block: clamp(5rem, 12vw, 11rem);
+    background:
+      radial-gradient(120% 60% at 100% 0%, rgba(255, 77, 0, 0.05), transparent 50%),
+      var(--ink);
+  }
+  .hl__head {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  .hl__title {
+    font-size: clamp(2.6rem, 7vw, 6rem);
+  }
+
+  .hl__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1rem, 2.5vw, 1.8rem);
+  }
+
+  .hl__card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--ink-card);
+    padding: clamp(1.6rem, 3vw, 2.8rem);
+    min-height: 22rem;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.4s ease, transform 0.5s var(--ease-out);
+  }
+  .hl__card:hover {
+    border-color: var(--line-strong);
+  }
+
+  .hl__card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: auto;
+  }
+  .hl__no {
+    color: var(--ember);
+    font-size: 0.9rem;
+  }
+  .hl__kicker {
+    color: var(--paper-faint);
+    font-size: 0.64rem;
+  }
+
+  .hl__name {
+    text-transform: none;
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    margin-top: 3rem;
+  }
+  .hl__body {
+    color: var(--paper-dim);
+    font-size: 1rem;
+    line-height: 1.55;
+    margin-top: 1.1rem;
+    max-width: 46ch;
+  }
+  .hl__tags {
+    margin-top: 1.6rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .hl__tag {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    padding: 0.3rem 0.65rem;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+  }
+
+  .hl__sheen {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      circle 18rem at var(--mx, 50%) var(--my, 0%),
+      rgba(255, 77, 0, 0.12),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .hl__card:hover .hl__sheen { opacity: 1; }
+
+  @media (max-width: 800px) {
+    .hl__grid { grid-template-columns: 1fr; }
+    .hl__card { min-height: 0; }
+  }
+</style>

@@ -1,0 +1,81 @@
+---
+const statement =
+  'For seven years I’ve lived where enterprise web meets the factory floor — wiring real-time industrial data into systems people actually depend on. Today I lead platform modernization and AI-assisted development at Steel Dynamics.';
+---
+
+<section class="intro" id="intro">
+  <div class="shell">
+    <span class="eyebrow" data-reveal>About</span>
+    <p class="intro__statement display-soft">
+      {statement.split(' ').map((w) => (
+        <span class="intro__w"><span class="intro__w-inner" data-word>{w}&nbsp;</span></span>
+      ))}
+    </p>
+
+    <div class="intro__grid">
+      <div class="intro__cell" data-reveal>
+        <span class="mono intro__k">Now</span>
+        <p>Leading the replacement of a legacy reporting platform and steering how a team adopts AI responsibly.</p>
+      </div>
+      <div class="intro__cell" data-reveal>
+        <span class="mono intro__k">Depth</span>
+        <p>.NET &amp; Angular full-stack, distributed systems, and the industrial protocols that move data off real machinery.</p>
+      </div>
+      <div class="intro__cell" data-reveal>
+        <span class="mono intro__k">Edge</span>
+        <p>I’ve shipped SCADA control rooms, on-prem serverless runtimes, and ML that recovered grid revenue.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro {
+    padding-block: clamp(6rem, 14vw, 13rem);
+  }
+  .intro__statement {
+    font-family: var(--font-display);
+    text-transform: none;
+    font-weight: 400;
+    font-size: clamp(1.9rem, 5.2vw, 5rem);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    margin: 2rem 0 0;
+    max-width: 20ch;
+  }
+  .intro__w {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+  }
+  .intro__w-inner {
+    display: inline-block;
+    will-change: transform;
+  }
+
+  .intro__grid {
+    margin-top: clamp(3.5rem, 8vw, 7rem);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+  }
+  .intro__cell {
+    border-top: 1px solid var(--line-strong);
+    padding-top: 1.3rem;
+  }
+  .intro__k {
+    color: var(--ember);
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .intro__cell p {
+    color: var(--paper-dim);
+    font-size: 1.02rem;
+    line-height: 1.55;
+    max-width: 32ch;
+  }
+
+  @media (max-width: 800px) {
+    .intro__grid { grid-template-columns: 1fr; }
+  }
+</style>

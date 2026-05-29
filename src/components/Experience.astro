@@ -1,0 +1,161 @@
+---
+import { experience } from '../data/content';
+---
+
+<section class="exp" id="experience">
+  <div class="shell">
+    <div class="exp__head">
+      <span class="eyebrow" data-reveal>Experience</span>
+      <h2 class="exp__title display" data-reveal>Where I’ve<br /><span class="exp__title-em">shipped</span></h2>
+    </div>
+
+    <ol class="exp__list">
+      {experience.map((job) => (
+        <li class="exp__job" data-reveal>
+          <div class="exp__no mono">{job.no}</div>
+          <div class="exp__main">
+            <div class="exp__row">
+              <h3 class="exp__company display">
+                {job.company}
+                {job.current && <span class="exp__live">Now</span>}
+              </h3>
+              <span class="exp__period mono">{job.period}</span>
+            </div>
+            <p class="exp__role">{job.role} <span class="exp__loc">— {job.location}</span></p>
+            <ul class="exp__bullets">
+              {job.bullets.map((b) => (
+                <li set:html={b} />
+              ))}
+            </ul>
+            <div class="exp__stack">
+              {job.stack.map((t) => <span class="exp__tag">{t}</span>)}
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .exp {
+    padding-block: clamp(5rem, 12vw, 11rem);
+  }
+  .exp__head {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    margin-bottom: clamp(3rem, 7vw, 6rem);
+  }
+  .exp__title {
+    font-size: clamp(3rem, 9vw, 8rem);
+  }
+  .exp__title-em {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--ember);
+  }
+
+  .exp__list {
+    list-style: none;
+  }
+  .exp__job {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    gap: 1.5rem;
+    padding-block: clamp(2rem, 4vw, 3.4rem);
+    border-top: 1px solid var(--line);
+    transition: background 0.4s ease;
+  }
+  .exp__job:last-child { border-bottom: 1px solid var(--line); }
+  .exp__job:hover { background: linear-gradient(90deg, rgba(255,77,0,0.04), transparent 40%); }
+
+  .exp__no {
+    color: var(--ember);
+    font-size: 0.9rem;
+    padding-top: 0.6rem;
+  }
+
+  .exp__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .exp__company {
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .exp__live {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    color: var(--ink);
+    background: #4ade80;
+    padding: 0.25rem 0.55rem;
+    border-radius: 100px;
+    transform: translateY(-0.4em);
+  }
+  .exp__period {
+    color: var(--paper-faint);
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+  .exp__role {
+    margin-top: 0.7rem;
+    color: var(--paper);
+    font-weight: 500;
+    font-size: 1.05rem;
+  }
+  .exp__loc { color: var(--paper-faint); font-weight: 400; }
+
+  .exp__bullets {
+    margin-top: 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    max-width: 72ch;
+    list-style: none;
+  }
+  .exp__bullets li {
+    color: var(--paper-dim);
+    font-size: 1rem;
+    line-height: 1.55;
+    padding-left: 1.4rem;
+    position: relative;
+  }
+  .exp__bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 7px;
+    height: 1px;
+    background: var(--ember);
+  }
+
+  .exp__stack {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .exp__tag {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    border: 1px solid var(--line-strong);
+    padding: 0.35rem 0.7rem;
+    border-radius: 100px;
+  }
+
+  @media (max-width: 700px) {
+    .exp__job { grid-template-columns: 1fr; gap: 0.5rem; }
+    .exp__no { padding-top: 0; }
+  }
+</style>

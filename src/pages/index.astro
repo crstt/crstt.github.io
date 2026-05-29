@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Intro from '../components/Intro.astro';
+import Stats from '../components/Stats.astro';
+import Experience from '../components/Experience.astro';
+import Highlights from '../components/Highlights.astro';
+import Capabilities from '../components/Capabilities.astro';
+import Contact from '../components/Contact.astro';
+import { profile } from '../data/content';
+---
+
+<BaseLayout
+  title={`${profile.name} — ${profile.role}`}
+  description={profile.summary}
+>
+  <div class="cursor" data-cursor aria-hidden="true">
+    <span class="cursor__dot"></span>
+    <span class="cursor__ring"></span>
+  </div>
+
+  <Nav />
+  <main>
+    <Hero />
+    <Intro />
+    <Stats />
+    <Experience />
+    <Highlights />
+    <Capabilities />
+    <Contact />
+  </main>
+
+  <style>
+    .cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9998;
+      pointer-events: none;
+      mix-blend-mode: difference;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .cursor.is-active { opacity: 1; }
+    .cursor__dot {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--paper);
+      transform: translate(-50%, -50%);
+    }
+    .cursor__ring {
+      position: absolute;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--paper);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s var(--ease-out), height 0.3s var(--ease-out);
+    }
+    .cursor.is-hover .cursor__ring { width: 64px; height: 64px; }
+
+    @media (hover: none), (pointer: coarse) {
+      .cursor { display: none; }
+    }
+  </style>
+</BaseLayout>

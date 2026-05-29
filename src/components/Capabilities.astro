@@ -1,0 +1,93 @@
+---
+import { capabilities } from '../data/content';
+---
+
+<section class="cap" id="capabilities">
+  <div class="shell">
+    <div class="cap__head">
+      <span class="eyebrow" data-reveal>Toolkit</span>
+      <h2 class="cap__title display" data-reveal>The stack I<br />reach for</h2>
+    </div>
+
+    <div class="cap__grid">
+      {capabilities.map((group, i) => (
+        <div class="cap__group" data-reveal>
+          <div class="cap__group-head">
+            <span class="mono cap__idx">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="cap__group-title">{group.title}</h3>
+          </div>
+          <ul class="cap__items">
+            {group.items.map((item) => <li class="cap__item">{item}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cap {
+    padding-block: clamp(5rem, 12vw, 11rem);
+    border-top: 1px solid var(--line);
+  }
+  .cap__head {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  .cap__title {
+    font-size: clamp(2.6rem, 7vw, 6rem);
+  }
+
+  .cap__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.5rem, 4vw, 3.5rem) clamp(2rem, 5vw, 5rem);
+  }
+  .cap__group {
+    border-top: 1px solid var(--line-strong);
+    padding-top: 1.4rem;
+  }
+  .cap__group-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    margin-bottom: 1.3rem;
+  }
+  .cap__idx { color: var(--ember); font-size: 0.66rem; }
+  .cap__group-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  .cap__items {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .cap__item {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+    color: var(--paper-dim);
+    padding: 0.4rem 0.75rem;
+    background: var(--ink-soft);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    transition: color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  }
+  .cap__item:hover {
+    color: var(--paper);
+    border-color: var(--ember);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 900px) {
+    .cap__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .cap__grid { grid-template-columns: 1fr; }
+  }
+</style>

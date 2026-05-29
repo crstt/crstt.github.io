@@ -1,0 +1,161 @@
+---
+import { profile, education, certifications } from '../data/content';
+const year = new Date().getFullYear();
+---
+
+<section class="credo">
+  <div class="shell credo__grid">
+    <div class="credo__col" data-reveal>
+      <span class="mono credo__k">Education</span>
+      <ul class="credo__list">
+        {education.map((e) => (
+          <li>
+            <strong>{e.school}</strong>
+            <span>{e.detail}</span>
+            <span class="credo__year mono">{e.year}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="credo__col" data-reveal>
+      <span class="mono credo__k">Certifications</span>
+      <ul class="credo__list credo__list--cert">
+        {certifications.map((c) => (
+          <li><span class="credo__star">✳</span>{c}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="contact" id="contact">
+  <div class="shell">
+    <span class="eyebrow" data-reveal>Let’s build</span>
+    <a class="contact__mail display" href={`mailto:${profile.email}`} data-reveal data-tilt>
+      Start a<br />conversation
+      <span class="contact__arrow">→</span>
+    </a>
+
+    <div class="contact__row">
+      <a class="contact__link" href={`mailto:${profile.email}`}>
+        <span class="mono contact__link-k">Email</span>
+        {profile.email}
+      </a>
+      <a class="contact__link" href={profile.linkedin} target="_blank" rel="noopener">
+        <span class="mono contact__link-k">LinkedIn</span>
+        /matteo-catalano
+      </a>
+      <a class="contact__link" href={`tel:${profile.phone.replace(/[^0-9]/g, '')}`}>
+        <span class="mono contact__link-k">Phone</span>
+        {profile.phone}
+      </a>
+    </div>
+
+    <div class="contact__base">
+      <span class="mono">© {year} {profile.name}</span>
+      <span class="mono">{profile.location} · Built with Astro</span>
+      <a class="mono contact__top" href="#top">Back to top ↑</a>
+    </div>
+  </div>
+  <div class="contact__bg display" aria-hidden="true">CATALANO</div>
+</footer>
+
+<style>
+  .credo {
+    padding-block: clamp(3.5rem, 8vw, 7rem);
+    border-top: 1px solid var(--line);
+  }
+  .credo__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 6rem);
+  }
+  .credo__k { color: var(--ember); display: block; margin-bottom: 1.6rem; }
+  .credo__list { list-style: none; display: flex; flex-direction: column; gap: 1.4rem; }
+  .credo__list li { display: flex; flex-direction: column; gap: 0.25rem; }
+  .credo__list strong { font-size: 1.25rem; font-weight: 700; }
+  .credo__list span { color: var(--paper-dim); }
+  .credo__year { color: var(--paper-faint); margin-top: 0.2rem; }
+
+  .credo__list--cert li { flex-direction: row; align-items: center; gap: 0.7rem; color: var(--paper); font-size: 1.05rem; }
+  .credo__star { color: var(--ember); font-size: 0.8rem; }
+
+  .contact {
+    position: relative;
+    padding-block: clamp(5rem, 13vw, 12rem) 3rem;
+    border-top: 1px solid var(--line);
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--ink) 0%, #0d0907 100%);
+  }
+  .contact__mail {
+    position: relative;
+    display: inline-block;
+    font-size: clamp(3rem, 11vw, 11rem);
+    line-height: 0.92;
+    margin: 1.8rem 0 0;
+    color: var(--paper);
+    transition: color 0.4s ease;
+    z-index: 2;
+  }
+  .contact__mail:hover { color: var(--ember); }
+  .contact__arrow {
+    display: inline-block;
+    font-size: 0.4em;
+    transform: translateY(-0.4em);
+    margin-left: 0.3em;
+    transition: transform 0.4s var(--ease-out);
+  }
+  .contact__mail:hover .contact__arrow { transform: translate(0.3em, -0.4em); }
+
+  .contact__row {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(1.5rem, 5vw, 4rem);
+    margin-top: clamp(3rem, 7vw, 5rem);
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+  }
+  .contact__link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 1.05rem;
+    color: var(--paper);
+    transition: color 0.25s ease;
+  }
+  .contact__link:hover { color: var(--ember-hot); }
+  .contact__link-k { color: var(--paper-faint); }
+
+  .contact__base {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: clamp(3rem, 8vw, 6rem);
+    color: var(--paper-faint);
+  }
+  .contact__top { color: var(--paper-dim); transition: color 0.25s ease; }
+  .contact__top:hover { color: var(--ember); }
+
+  .contact__bg {
+    position: absolute;
+    left: 50%;
+    bottom: -4vw;
+    transform: translateX(-50%);
+    font-size: 26vw;
+    line-height: 1;
+    color: var(--paper);
+    opacity: 0.025;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 1;
+  }
+
+  @media (max-width: 700px) {
+    .credo__grid { grid-template-columns: 1fr; }
+  }
+</style>

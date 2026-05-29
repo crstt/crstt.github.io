@@ -1,0 +1,213 @@
+---
+import { profile } from '../data/content';
+
+const marquee = ['.NET', 'Angular', 'Distributed Systems', 'SCADA', 'Azure', 'AI-Assisted Dev', 'Microservices', 'Real-Time Data'];
+---
+
+<section class="hero" id="top">
+  <canvas class="hero__canvas" data-embers aria-hidden="true"></canvas>
+  <div class="hero__glow" aria-hidden="true"></div>
+
+  <div class="hero__inner shell">
+    <div class="hero__meta">
+      <span class="mono hero__loc">{profile.location}</span>
+      <span class="mono hero__avail"><span class="hero__avail-dot"></span> Open to building</span>
+    </div>
+
+    <h1 class="hero__title display">
+      <span class="hero__line" data-hero-line>
+        <span class="hero__word">Matteo</span>
+      </span>
+      <span class="hero__line" data-hero-line>
+        <span class="hero__word hero__word--out">Catalano</span>
+      </span>
+    </h1>
+
+    <div class="hero__foot">
+      <p class="hero__role" data-hero-fade>
+        <span class="eyebrow">Full-Stack Software Engineer</span>
+        <span class="hero__tag">{profile.tagline}</span>
+      </p>
+      <a class="hero__scroll" href="#intro" data-hero-fade aria-label="Scroll to about">
+        <span class="mono">Scroll</span>
+        <span class="hero__scroll-track"><span class="hero__scroll-thumb"></span></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero__marquee" aria-hidden="true">
+    <div class="hero__marquee-track" data-marquee>
+      {[...marquee, ...marquee].map((m) => (
+        <span class="hero__chip">{m}<span class="hero__chip-star">✳</span></span>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-block: 6rem 0;
+    overflow: hidden;
+  }
+
+  .hero__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+  .hero__glow {
+    position: absolute;
+    left: 50%;
+    bottom: -30%;
+    width: 120vw;
+    height: 80vh;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center, rgba(255, 77, 0, 0.22), transparent 62%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero__inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+
+  .hero__meta {
+    display: flex;
+    justify-content: space-between;
+    color: var(--paper-dim);
+    margin-bottom: 1.6rem;
+  }
+  .hero__avail {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--paper-dim);
+  }
+  .hero__avail-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 10px #4ade80;
+  }
+
+  .hero__title {
+    font-size: clamp(4.5rem, 18vw, 17rem);
+    margin: 0;
+  }
+  .hero__line {
+    display: block;
+    overflow: hidden;
+  }
+  .hero__word {
+    display: inline-block;
+    will-change: transform;
+  }
+  .hero__word--out {
+    -webkit-text-stroke: 1.5px var(--paper);
+    color: transparent;
+    transition: color 0.4s ease;
+  }
+  .hero:hover .hero__word--out {
+    color: var(--ember);
+    -webkit-text-stroke-color: var(--ember);
+  }
+
+  .hero__foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-top: 2.4rem;
+    padding-bottom: 2.6rem;
+    border-top: 1px solid var(--line);
+    padding-top: 1.8rem;
+  }
+  .hero__role {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    max-width: 34ch;
+  }
+  .hero__tag {
+    font-size: clamp(1.05rem, 1.6vw, 1.45rem);
+    line-height: 1.35;
+    color: var(--paper);
+    font-weight: 500;
+  }
+
+  .hero__scroll {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    color: var(--paper-dim);
+    flex-shrink: 0;
+  }
+  .hero__scroll-track {
+    width: 1px;
+    height: 46px;
+    background: var(--line-strong);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero__scroll-thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    background: var(--ember);
+    animation: scrollthumb 2s var(--ease-io) infinite;
+  }
+  @keyframes scrollthumb {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(250%); }
+  }
+
+  .hero__marquee {
+    position: relative;
+    z-index: 2;
+    border-block: 1px solid var(--line);
+    background: rgba(10, 10, 11, 0.4);
+    overflow: hidden;
+    padding-block: 0.9rem;
+    white-space: nowrap;
+  }
+  .hero__marquee-track {
+    display: inline-flex;
+    gap: 2.6rem;
+    will-change: transform;
+  }
+  .hero__chip {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    display: inline-flex;
+    align-items: center;
+    gap: 2.6rem;
+  }
+  .hero__chip-star {
+    color: var(--ember);
+    font-size: 0.7rem;
+  }
+
+  @media (max-width: 700px) {
+    .hero__foot {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .hero__scroll { display: none; }
+  }
+</style>
