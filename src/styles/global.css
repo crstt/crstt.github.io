@@ -5,6 +5,20 @@
 
 /* Fonts are imported in BaseLayout.astro via @fontsource packages. */
 
+/* ------------------------------------------------------------------
+   Themeable color tokens, registered as typed custom properties so the
+   browser can *interpolate* them. The experience section swaps these on
+   :root as each job scrolls into view (see initThemeShift in main.ts),
+   and the transition below tweens the whole page between industries.
+   ------------------------------------------------------------------ */
+@property --ember      { syntax: '<color>'; inherits: true; initial-value: #ff4d00; }
+@property --ember-hot  { syntax: '<color>'; inherits: true; initial-value: #ff7a1a; }
+@property --ember-deep { syntax: '<color>'; inherits: true; initial-value: #c81e00; }
+@property --ink        { syntax: '<color>'; inherits: true; initial-value: #0a0a0b; }
+@property --ink-soft   { syntax: '<color>'; inherits: true; initial-value: #131316; }
+@property --ink-card   { syntax: '<color>'; inherits: true; initial-value: #161618; }
+@property --steel      { syntax: '<color>'; inherits: true; initial-value: #8a98a8; }
+
 :root {
   /* palette */
   --ink: #0a0a0b;          /* warm near-black */
@@ -31,6 +45,16 @@
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Smoothly tween the themeable tokens when the active industry changes. */
+  transition:
+    --ember 0.9s var(--ease-io),
+    --ember-hot 0.9s var(--ease-io),
+    --ember-deep 0.9s var(--ease-io),
+    --ink 0.9s var(--ease-io),
+    --ink-soft 0.9s var(--ease-io),
+    --ink-card 0.9s var(--ease-io),
+    --steel 0.9s var(--ease-io);
 }
 
 *,
