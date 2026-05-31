@@ -21,6 +21,21 @@ export const stats = [
   { value: 99.9, suffix: '%', label: 'Uptime on field-to-datacenter pipelines', decimals: 1 },
 ];
 
+/**
+ * Per-job color theme. Each job re-tints the whole page as it scrolls into
+ * view (see initThemeShift in scripts/main.ts), reflecting that industry.
+ * Keys map 1:1 to the themeable CSS custom properties in styles/global.css.
+ */
+export interface JobTheme {
+  ember: string;      // primary accent
+  emberHot: string;   // brighter accent
+  emberDeep: string;  // deeper accent
+  ink: string;        // page background
+  inkSoft: string;    // raised surface
+  inkCard: string;    // card surface
+  steel: string;      // cool secondary
+}
+
 export interface Job {
   no: string;
   company: string;
@@ -30,7 +45,19 @@ export interface Job {
   current?: boolean;
   bullets: string[];
   stack: string[];
+  theme: JobTheme;
 }
+
+/** Default theme — molten steel forge (Steel Dynamics). Mirrors :root in global.css. */
+export const defaultTheme: JobTheme = {
+  ember: '#ff4d00',
+  emberHot: '#ff7a1a',
+  emberDeep: '#c81e00',
+  ink: '#0a0a0b',
+  inkSoft: '#131316',
+  inkCard: '#161618',
+  steel: '#8a98a8',
+};
 
 export const experience: Job[] = [
   {
@@ -48,6 +75,8 @@ export const experience: Job[] = [
       'Integrated Azure Entra ID for authentication and role-based access across internal systems; ship full-stack features with .NET APIs and Angular.',
     ],
     stack: ['C#', '.NET', 'Angular', 'Azure', 'Microservices', 'Entra ID'],
+    // Steel forge — molten amber on warm near-black (the default).
+    theme: defaultTheme,
   },
   {
     no: '02',
@@ -60,6 +89,16 @@ export const experience: Job[] = [
       'Led a redesign of the department website and tutored students daily across software development and STEM.',
     ],
     stack: ['Swift', 'iOS', 'Web', 'Mentoring'],
+    // Education — warm scholarly gold (desk-lamp / lab light).
+    theme: {
+      ember: '#f5b32e',
+      emberHot: '#ffd166',
+      emberDeep: '#c98a00',
+      ink: '#0b0a07',
+      inkSoft: '#15130d',
+      inkCard: '#18160f',
+      steel: '#a8a08a',
+    },
   },
   {
     no: '03',
@@ -74,6 +113,16 @@ export const experience: Job[] = [
       'Applied ML models to estimate wind-turbine output during curtailment events — production data used to claim grid refunds.',
     ],
     stack: ['C#', 'Python', 'JavaScript', 'SCADA', 'IEC 104', 'OPC', 'ML'],
+    // Renewables — wind-turbine teal / sky-cyan on a deep teal-black.
+    theme: {
+      ember: '#2dd4bf',
+      emberHot: '#5eead4',
+      emberDeep: '#0d9488',
+      ink: '#05100f',
+      inkSoft: '#0c1817',
+      inkCard: '#0e1b1a',
+      steel: '#7fa8a0',
+    },
   },
   {
     no: '04',
@@ -85,6 +134,16 @@ export const experience: Job[] = [
       'Delivered the company’s business-management web app end-to-end to support internal operations.',
     ],
     stack: ['PHP', 'Laravel', 'Eloquent', 'JavaScript', 'MySQL'],
+    // Eco bike last-mile delivery — vivid leaf green on a deep green-black.
+    theme: {
+      ember: '#5fd35f',
+      emberHot: '#86e886',
+      emberDeep: '#2f9e44',
+      ink: '#070d06',
+      inkSoft: '#101a0f',
+      inkCard: '#131d11',
+      steel: '#8aa886',
+    },
   },
 ];
 

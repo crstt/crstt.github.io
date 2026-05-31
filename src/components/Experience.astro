@@ -11,7 +11,7 @@ import { experience } from '../data/content';
 
     <ol class="exp__list">
       {experience.map((job) => (
-        <li class="exp__job" data-reveal>
+        <li class="exp__job" data-reveal data-theme={JSON.stringify(job.theme)}>
           <div class="exp__no mono">{job.no}</div>
           <div class="exp__main">
             <div class="exp__row">
@@ -67,7 +67,7 @@ import { experience } from '../data/content';
     transition: background 0.4s ease;
   }
   .exp__job:last-child { border-bottom: 1px solid var(--line); }
-  .exp__job:hover { background: linear-gradient(90deg, rgba(255,77,0,0.04), transparent 40%); }
+  .exp__job:hover { background: linear-gradient(90deg, color-mix(in srgb, var(--ember) 6%, transparent), transparent 40%); }
 
   .exp__no {
     color: var(--ember);

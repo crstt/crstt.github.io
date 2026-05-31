@@ -265,6 +265,88 @@ function initEmbers() {
 }
 
 /* ------------------------------------------------------------------ */
+/* Per-job theme shift: re-tint the page to each industry on scroll    */
+/* ------------------------------------------------------------------ */
+interface JobThemeVars {
+  ember: string;
+  emberHot: string;
+  emberDeep: string;
+  ink: string;
+  inkSoft: string;
+  inkCard: string;
+  steel: string;
+}
+
+// Mirrors :root in global.css — the page reverts to this above/below the list.
+const DEFAULT_THEME: JobThemeVars = {
+  ember: '#ff4d00',
+  emberHot: '#ff7a1a',
+  emberDeep: '#c81e00',
+  ink: '#0a0a0b',
+  inkSoft: '#131316',
+  inkCard: '#161618',
+  steel: '#8a98a8',
+};
+
+function applyTheme(t: JobThemeVars) {
+  const root = document.documentElement.style;
+  root.setProperty('--ember', t.ember);
+  root.setProperty('--ember-hot', t.emberHot);
+  root.setProperty('--ember-deep', t.emberDeep);
+  root.setProperty('--ink', t.ink);
+  root.setProperty('--ink-soft', t.inkSoft);
+  root.setProperty('--ink-card', t.inkCard);
+  root.setProperty('--steel', t.steel);
+}
+
+function initThemeShift() {
+  const jobs = gsap.utils
+    .toArray<HTMLElement>('.exp__job[data-theme]')
+    .map((el) => {
+      try {
+        return { el, theme: JSON.parse(el.dataset.theme || '') as JobThemeVars };
+      } catch {
+        return null;
+      }
+    })
+    .filter((j): j is { el: HTMLElement; theme: JobThemeVars } => j !== null);
+
+  if (!jobs.length) return;
+
+  // Apply whichever job is closest to the vertical center of the viewport.
+  // Above the first / below the last job (none in view) we fall back to the
+  // steel-forge default, so the rest of the page keeps the brand color.
+  let active: JobThemeVars | null = null;
+  const pick = () => {
+    const vh = window.innerHeight;
+    const mid = vh / 2;
+    let best: JobThemeVars | null = null;
+    let bestDist = Infinity;
+
+    for (const { el, theme } of jobs) {
+      const r = el.getBoundingClientRect();
+      if (r.bottom <= 0 || r.top >= vh) continue; // not in view
+      const dist = Math.abs(r.top + r.height / 2 - mid);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = theme;
+      }
+    }
+
+    const next = best ?? DEFAULT_THEME;
+    if (next !== active) {
+      active = next;
+      applyTheme(next);
+    }
+  };
+
+  // A trigger-less ScrollTrigger gives us a throttled scroll/resize callback
+  // already synced with Lenis via ScrollTrigger.update.
+  ScrollTrigger.create({ onUpdate: pick, onRefresh: pick });
+  pick();
+}
+
+/* ------------------------------------------------------------------ */
 function boot() {
   initSmoothScroll();
   initHero();
@@ -275,6 +357,7 @@ function boot() {
   initCards();
   initCursor();
   initEmbers();
+  initThemeShift();
   ScrollTrigger.refresh();
 }
 
