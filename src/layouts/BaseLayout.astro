@@ -38,6 +38,16 @@ const url = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : '';
   </head>
   <body>
     <slot />
+
+    <!-- SCADA HMI mode chrome — hidden unless html.scada (see global.css) -->
+    <div class="crt-fx" aria-hidden="true"></div>
+    <div class="scada-bar mono">
+      <span><span class="scada-bar__dot"></span>SCADA-9000 · HMI ACTIVE</span>
+      <span>OPERATOR: M.CATALANO · SYS: NOMINAL · ALARMS: 0</span>
+      <span data-scada-clock>--:--:--</span>
+      <button class="scada-bar__exit" type="button" data-scada-toggle>Exit HMI</button>
+    </div>
+
     <script>
       import '../scripts/main.ts';
     </script>

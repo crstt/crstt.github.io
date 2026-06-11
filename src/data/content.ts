@@ -4,14 +4,14 @@ export const profile = {
   name: 'Matteo Catalano',
   first: 'Matteo',
   last: 'Catalano',
-  role: 'Full-Stack Software Engineer',
+  role: 'Full-Stack Software Engineer & Team Lead',
   tagline: 'I build production systems where the web meets the factory floor.',
   location: 'Fort Wayne, IN',
   email: 'matteo598.catalano@gmail.com',
   phone: '(260) 289-9949',
   linkedin: 'https://www.linkedin.com/in/matteo-catalano/',
   summary:
-    'Full-stack engineer with 7+ years delivering production systems across industrial automation and enterprise web platforms. Specialized in .NET, Angular, distributed systems, and real-time data integration — currently leading platform modernization and AI-assisted development at Steel Dynamics.',
+    'Full-stack engineer & team lead with 7+ years delivering production systems across industrial automation and enterprise web platforms. Specialized in .NET, Angular, distributed systems, and real-time data integration — currently leading the engineering team supporting shipping operations at Steel Dynamics, driving AI-assisted development and platform modernization.',
 };
 
 export const stats = [
@@ -63,23 +63,45 @@ export const experience: Job[] = [
   {
     no: '01',
     company: 'Steel Dynamics',
-    role: 'Software Engineer',
+    role: 'Lead Software Engineer',
     location: 'Fort Wayne, IN',
-    period: 'Jun 2024 — Present',
+    period: 'Jan 2026 — Present',
     current: true,
     bullets: [
-      'Lead architecture for replacing a legacy reporting system — 4 new microservices generating hundreds of internal reports and customer-facing documents (bills of lading, order acknowledgments).',
-      'Built an in-house serverless C# script-execution platform — an on-prem equivalent to AWS Lambda — to run the non-visual report logic previously locked inside the legacy system.',
+      'Lead the engineering team supporting shipping operations — owning technical direction, delivery, and team execution.',
       'Mentor 5 developers, driving code-review, testing, and design standards for higher quality and faster delivery.',
-      'Lead the team’s adoption of AI-assisted development, partnering with management to define guardrails and risk-management practices.',
-      'Integrated Azure Entra ID for authentication and role-based access across internal systems; ship full-stack features with .NET APIs and Angular.',
+      'Lead the team’s adoption of AI-assisted development, partnering with management to define guardrails and risk-management practices that enable developers to ship better and faster.',
     ],
-    stack: ['C#', '.NET', 'Angular', 'Azure', 'Microservices', 'Entra ID'],
+    stack: ['Leadership', 'C#', '.NET', 'Angular', 'Azure DevOps', 'AI Guardrails'],
     // Steel forge — molten amber on warm near-black (the default).
     theme: defaultTheme,
   },
   {
     no: '02',
+    company: 'Steel Dynamics',
+    role: 'Software Engineer',
+    location: 'Fort Wayne, IN',
+    period: 'Jun 2024 — Dec 2025',
+    bullets: [
+      'Led architecture for replacing a legacy reporting system — 4 new microservices generating hundreds of internal reports and customer-facing documents (bills of lading, order acknowledgments).',
+      'Built an in-house serverless C# script-execution platform — an on-prem equivalent to AWS Lambda — to run the non-visual report logic previously locked inside the legacy system.',
+      'Integrated Azure Entra ID for authentication and role-based access across internal systems.',
+      'Delivered full-stack features with .NET APIs and Angular components for sales workflows, and created internal NPM packages to standardize shared logic across teams.',
+    ],
+    stack: ['C#', '.NET', 'Angular', 'Azure', 'Microservices', 'Entra ID'],
+    // Deeper molten crimson — same forge, earlier heat.
+    theme: {
+      ember: '#e8402a',
+      emberHot: '#ff6a45',
+      emberDeep: '#a81b0d',
+      ink: '#0c0909',
+      inkSoft: '#171010',
+      inkCard: '#1a1212',
+      steel: '#a89090',
+    },
+  },
+  {
+    no: '03',
     company: 'Ivy Tech Community College',
     role: 'Computer Lab Assistant — Developer & Tutor',
     location: 'Fort Wayne, IN',
@@ -101,7 +123,7 @@ export const experience: Job[] = [
     },
   },
   {
-    no: '03',
+    no: '04',
     company: 'Sirius',
     role: 'Software Developer & System Integrator',
     location: 'Turin, Italy',
@@ -125,7 +147,7 @@ export const experience: Job[] = [
     },
   },
   {
-    no: '04',
+    no: '05',
     company: 'Deliveriamo (formerly Pony Zero)',
     role: 'Full-Stack Web Developer',
     location: 'Turin, Italy',
@@ -221,5 +243,4 @@ export const education = [
 export const certifications = [
   'CompTIA Project+',
   'AWS Certified Cloud Practitioner',
-  'Microsoft Technology Associate 98-361',
 ];

@@ -1,0 +1,210 @@
+---
+/**
+ * SCADA-9000 — a CRT operator terminal, CSS-art only.
+ * Clicking it flips the whole site into green-phosphor HMI mode
+ * (see initScada in scripts/main.ts and the html.scada rules in global.css).
+ */
+---
+
+<section class="ctrl" id="control-room">
+  <div class="shell ctrl__inner">
+    <div class="ctrl__copy">
+      <span class="eyebrow" data-reveal>Control room</span>
+      <h2 class="ctrl__title display" data-reveal>Old habits<br /><span class="ctrl__title-em">die hard</span></h2>
+      <p class="ctrl__sub" data-reveal>
+        I spent four years staring at SCADA screens in wind and solar control rooms.
+        This one still works — go ahead, press it.
+      </p>
+    </div>
+
+    <div
+      class="crt"
+      data-scada-toggle
+      role="button"
+      tabindex="0"
+      aria-pressed="false"
+      aria-label="Toggle SCADA HMI mode"
+      data-reveal
+    >
+      <div class="crt__case">
+        <div class="crt__screen">
+          <pre class="crt__text" data-crt-text></pre>
+          <span class="crt__cursor"></span>
+          <div class="crt__scanlines" aria-hidden="true"></div>
+          <div class="crt__glare" aria-hidden="true"></div>
+        </div>
+        <div class="crt__chin">
+          <span class="crt__led" aria-hidden="true"></span>
+          <span class="crt__brand mono">SCADA-9000</span>
+          <span class="crt__knobs" aria-hidden="true"><i></i><i></i></span>
+        </div>
+      </div>
+      <div class="crt__stand" aria-hidden="true"></div>
+      <p class="crt__hint mono">// click to engage HMI mode</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ctrl {
+    padding-block: clamp(4rem, 9vw, 8rem);
+    border-top: 1px solid var(--line);
+  }
+  .ctrl__inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: clamp(2.5rem, 6vw, 6rem);
+  }
+  .ctrl__title {
+    font-size: clamp(2.6rem, 6.5vw, 5.5rem);
+    margin-top: 1.2rem;
+  }
+  .ctrl__title-em {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--ember);
+  }
+  .ctrl__sub {
+    margin-top: 1.6rem;
+    max-width: 44ch;
+    color: var(--paper-dim);
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  /* ---- the monitor ---- */
+  .crt {
+    cursor: pointer;
+    justify-self: center;
+    text-align: center;
+    user-select: none;
+    transition: transform 0.35s var(--ease-out);
+  }
+  .crt:hover { transform: translateY(-4px); }
+  .crt:focus-visible {
+    outline: 2px solid var(--ember);
+    outline-offset: 8px;
+    border-radius: 12px;
+  }
+
+  .crt__case {
+    width: clamp(280px, 26vw, 380px);
+    background: linear-gradient(160deg, #2a2a28, #1b1b19 60%, #141412);
+    border: 1px solid #000;
+    border-radius: 18px 18px 14px 14px;
+    padding: 16px 16px 0;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.07),
+      0 24px 60px rgba(0, 0, 0, 0.55);
+  }
+  .crt__screen {
+    position: relative;
+    aspect-ratio: 4 / 3.1;
+    background: radial-gradient(ellipse at 50% 45%, #0a2012 0%, #04130a 70%, #020a05 100%);
+    border-radius: 10px / 14px;
+    border: 1px solid #000;
+    box-shadow:
+      inset 0 0 40px rgba(0, 0, 0, 0.85),
+      inset 0 0 8px rgba(54, 255, 110, 0.12);
+    overflow: hidden;
+    text-align: left;
+  }
+  .crt__text {
+    position: absolute;
+    inset: 12% 8%;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: clamp(0.55rem, 0.85vw, 0.7rem);
+    line-height: 1.75;
+    letter-spacing: 0.06em;
+    color: #49ff7e;
+    text-shadow: 0 0 6px rgba(73, 255, 126, 0.7);
+    white-space: pre-wrap;
+  }
+  .crt__cursor {
+    position: absolute;
+    left: 8%;
+    bottom: 9%;
+    width: 0.55em;
+    height: 1em;
+    background: #49ff7e;
+    box-shadow: 0 0 8px rgba(73, 255, 126, 0.8);
+    animation: crtblink 1.1s steps(1) infinite;
+  }
+  @keyframes crtblink { 50% { opacity: 0; } }
+
+  .crt__scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.28) 0 1px,
+      transparent 1px 3px
+    );
+    pointer-events: none;
+  }
+  .crt__glare {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 28% 18%, rgba(255, 255, 255, 0.1), transparent 45%);
+    pointer-events: none;
+  }
+
+  .crt__chin {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.75rem 0.4rem;
+  }
+  .crt__led {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #49ff7e;
+    box-shadow: 0 0 8px #49ff7e;
+    animation: crtblink 2.6s steps(1) infinite;
+  }
+  .crt__brand {
+    color: #8c8c86;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+  }
+  .crt__knobs {
+    margin-left: auto;
+    display: inline-flex;
+    gap: 0.45rem;
+  }
+  .crt__knobs i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #0d0d0c;
+    border: 1px solid #333;
+  }
+
+  .crt__stand {
+    width: 38%;
+    height: 16px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #1b1b19, #0e0e0d);
+    border: 1px solid #000;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+  }
+  .crt__hint {
+    margin-top: 1.1rem;
+    color: var(--paper-faint);
+    font-size: 0.62rem;
+    transition: color 0.3s ease;
+  }
+  .crt:hover .crt__hint { color: var(--ember); }
+
+  /* While HMI mode is live, the hint flips meaning. */
+  :global(html.scada) .crt__hint::after { content: ' — engaged'; }
+
+  @media (max-width: 900px) {
+    .ctrl__inner { grid-template-columns: 1fr; }
+    .crt { justify-self: start; text-align: left; }
+    .crt__stand { margin: 0; margin-left: 18%; }
+  }
+</style>

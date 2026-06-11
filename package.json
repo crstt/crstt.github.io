@@ -13,11 +13,13 @@
   "dependencies": {
     "astro": "^5.6.1",
     "gsap": "^3.13.0",
-    "lenis": "^1.3.1"
+    "lenis": "^1.3.1",
+    "three": "^0.184.0"
   },
   "devDependencies": {
     "@fontsource/anton": "^5.2.5",
     "@fontsource/hanken-grotesk": "^5.2.5",
-    "@fontsource/jetbrains-mono": "^5.2.5"
+    "@fontsource/jetbrains-mono": "^5.2.5",
+    "@types/three": "^0.184.1"
   }
 }
