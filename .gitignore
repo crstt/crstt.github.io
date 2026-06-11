@@ -19,6 +19,3 @@ pnpm-debug.log*
 
 # tooling artifacts
 .playwright-mcp/
-
-# generated at build time by scripts/generate-resume-pdf.ts
-public/Matteo-Catalano-Resume.pdf

@@ -6,8 +6,6 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "pdf": "tsx scripts/generate-resume-pdf.ts",
-    "prebuild": "npm run pdf",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
@@ -22,9 +20,6 @@
     "@fontsource/anton": "^5.2.5",
     "@fontsource/hanken-grotesk": "^5.2.5",
     "@fontsource/jetbrains-mono": "^5.2.5",
-    "@types/pdfkit": "^0.17.6",
-    "@types/three": "^0.184.1",
-    "pdfkit": "^0.19.1",
-    "tsx": "^4.22.4"
+    "@types/three": "^0.184.1"
   }
 }
