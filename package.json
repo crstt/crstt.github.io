@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "pdf": "tsx scripts/generate-resume-pdf.ts",
+    "prebuild": "npm run pdf",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
@@ -13,11 +15,16 @@
   "dependencies": {
     "astro": "^5.6.1",
     "gsap": "^3.13.0",
-    "lenis": "^1.3.1"
+    "lenis": "^1.3.1",
+    "three": "^0.184.0"
   },
   "devDependencies": {
     "@fontsource/anton": "^5.2.5",
     "@fontsource/hanken-grotesk": "^5.2.5",
-    "@fontsource/jetbrains-mono": "^5.2.5"
+    "@fontsource/jetbrains-mono": "^5.2.5",
+    "@types/pdfkit": "^0.17.6",
+    "@types/three": "^0.184.1",
+    "pdfkit": "^0.19.1",
+    "tsx": "^4.22.4"
   }
 }

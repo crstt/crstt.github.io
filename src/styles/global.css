@@ -183,6 +183,107 @@ section {
   }
 }
 
+/* ============================================================
+   SCADA HMI mode — toggled by the SCADA-9000 CRT (see initScada).
+   Palette swap happens via inline custom props in JS; these rules
+   add the CRT artifacts: scanlines, vignette, flicker, phosphor glow.
+   ============================================================ */
+.crt-fx,
+.scada-bar {
+  display: none;
+}
+
+html.scada .crt-fx {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.18) 0 1px,
+    transparent 1px 3px
+  );
+  animation: scadaFlicker 4s steps(1) infinite;
+}
+html.scada .crt-fx::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, transparent 55%, rgba(0, 6, 2, 0.55) 100%),
+    linear-gradient(rgba(54, 255, 110, 0.03), rgba(54, 255, 110, 0.03));
+}
+@keyframes scadaFlicker {
+  0%, 100% { opacity: 1; }
+  3% { opacity: 0.82; }
+  4% { opacity: 1; }
+  38% { opacity: 1; }
+  39% { opacity: 0.9; }
+  40% { opacity: 1; }
+  71% { opacity: 1; }
+  72% { opacity: 0.86; }
+  73% { opacity: 1; }
+}
+
+html.scada .scada-bar {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9000;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 2rem;
+  padding: 0.55rem 1.4rem;
+  background: rgba(2, 12, 6, 0.92);
+  border-top: 1px solid rgba(54, 255, 110, 0.4);
+  color: #8cffae;
+  backdrop-filter: blur(6px);
+}
+.scada-bar__dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #36ff6e;
+  box-shadow: 0 0 8px #36ff6e;
+  margin-right: 0.6rem;
+  animation: scadaPulse 1.6s steps(1) infinite;
+}
+@keyframes scadaPulse { 50% { opacity: 0.35; } }
+.scada-bar__exit {
+  cursor: pointer;
+  background: none;
+  border: 1px solid rgba(54, 255, 110, 0.5);
+  border-radius: 100px;
+  color: #8cffae;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  padding: 0.2rem 0.8rem;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.scada-bar__exit:hover {
+  background: #36ff6e;
+  color: #020805;
+}
+
+/* phosphor glow on the big type while in HMI mode */
+html.scada .display {
+  text-shadow: 0 0 22px color-mix(in srgb, var(--ember) 35%, transparent);
+}
+html.scada .mono,
+html.scada .eyebrow {
+  text-shadow: 0 0 10px color-mix(in srgb, var(--ember) 30%, transparent);
+}
+
+@media (max-width: 700px) {
+  html.scada .scada-bar > :nth-child(2) { display: none; }
+}
+
 /* utility */
 .sr-only {
   position: absolute;

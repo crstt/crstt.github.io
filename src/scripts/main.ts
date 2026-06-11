@@ -206,6 +206,10 @@ function initEmbers() {
   interface Ember { x: number; y: number; vy: number; vx: number; r: number; a: number; hue: number; }
   let embers: Ember[] = [];
 
+  // Orange band normally; green phosphor band in SCADA mode.
+  const hueBase = () =>
+    document.documentElement.classList.contains('scada') ? 125 : 14;
+
   const reset = (e: Ember, seed = false) => {
     e.x = Math.random() * w;
     e.y = seed ? Math.random() * h : h + 20;
@@ -213,9 +217,14 @@ function initEmbers() {
     e.vx = (Math.random() - 0.5) * 0.3;
     e.r = 0.6 + Math.random() * 2.2;
     e.a = 0.1 + Math.random() * 0.6;
-    e.hue = 14 + Math.random() * 20; // orange band
+    e.hue = hueBase() + Math.random() * 20;
     return e;
   };
+
+  // Re-tint live embers immediately when SCADA mode toggles.
+  document.addEventListener('forge:scada', () => {
+    for (const e of embers) e.hue = hueBase() + Math.random() * 20;
+  });
 
   const resize = () => {
     w = canvas.clientWidth;
@@ -297,7 +306,14 @@ function applyTheme(t: JobThemeVars) {
   root.setProperty('--ink-soft', t.inkSoft);
   root.setProperty('--ink-card', t.inkCard);
   root.setProperty('--steel', t.steel);
+  // Anything color-reactive (the morph cloud) listens for this.
+  document.dispatchEvent(new CustomEvent('forge:theme', { detail: t }));
 }
+
+/** Set by initScada — while HMI mode is on, the scroll theming yields. */
+let scadaOn = false;
+/** Re-applies the scroll-picked theme; assigned inside initThemeShift. */
+let repickTheme: () => void = () => applyTheme(DEFAULT_THEME);
 
 function initThemeShift() {
   const jobs = gsap.utils
@@ -317,19 +333,24 @@ function initThemeShift() {
   // Above the first / below the last job (none in view) we fall back to the
   // steel-forge default, so the rest of the page keeps the brand color.
   let active: JobThemeVars | null = null;
+  let activeIndex: number | null = null;
   const pick = () => {
+    if (scadaOn) return;
     const vh = window.innerHeight;
     const mid = vh / 2;
     let best: JobThemeVars | null = null;
+    let bestIndex: number | null = null;
     let bestDist = Infinity;
 
-    for (const { el, theme } of jobs) {
+    for (let i = 0; i < jobs.length; i++) {
+      const { el, theme } = jobs[i];
       const r = el.getBoundingClientRect();
       if (r.bottom <= 0 || r.top >= vh) continue; // not in view
       const dist = Math.abs(r.top + r.height / 2 - mid);
       if (dist < bestDist) {
         bestDist = dist;
         best = theme;
+        bestIndex = i;
       }
     }
 
@@ -338,12 +359,116 @@ function initThemeShift() {
       active = next;
       applyTheme(next);
     }
+    if (bestIndex !== activeIndex) {
+      activeIndex = bestIndex;
+      // The morph cloud reads this on lazy-init and listens for changes.
+      document.documentElement.dataset.forgeJob = bestIndex === null ? '' : String(bestIndex);
+      document.dispatchEvent(new CustomEvent('forge:job', { detail: { index: bestIndex } }));
+    }
+  };
+  repickTheme = () => {
+    active = null; // force re-apply even if the picked theme didn't change
+    pick();
   };
 
   // A trigger-less ScrollTrigger gives us a throttled scroll/resize callback
   // already synced with Lenis via ScrollTrigger.update.
   ScrollTrigger.create({ onUpdate: pick, onRefresh: pick });
   pick();
+}
+
+/* ------------------------------------------------------------------ */
+/* Morphing job point-cloud (three.js) — lazy-loaded near the section  */
+/* ------------------------------------------------------------------ */
+function initMorphCloudLazy() {
+  const host = document.querySelector<HTMLElement>('[data-cloud]');
+  if (!host || prefersReduced) return;
+  if (!window.matchMedia('(min-width: 1100px)').matches) return;
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        io.disconnect();
+        import('./morph-cloud').then((m) => m.initMorphCloud(host));
+      }
+    },
+    { rootMargin: '900px 0px' },
+  );
+  io.observe(host);
+}
+
+/* ------------------------------------------------------------------ */
+/* SCADA easter egg — CRT click flips the whole page into HMI mode     */
+/* ------------------------------------------------------------------ */
+const SCADA_THEME: JobThemeVars = {
+  ember: '#36ff6e',
+  emberHot: '#8cffae',
+  emberDeep: '#0fa84a',
+  ink: '#020805',
+  inkSoft: '#06140c',
+  inkCard: '#08170e',
+  steel: '#69a583',
+};
+
+function initScada() {
+  const toggles = document.querySelectorAll<HTMLElement>('[data-scada-toggle]');
+  if (!toggles.length) return;
+
+  const crtText = document.querySelector<HTMLElement>('[data-crt-text]');
+  const clock = document.querySelector<HTMLElement>('[data-scada-clock]');
+  const baseTitle = document.title;
+  let clockTimer = 0;
+
+  const IDLE_TEXT = [
+    '> SCADA-9000 SELF-TEST .... OK',
+    '> LINK: PLANT BUS ......... UP',
+    '> TAGS: 4096 GOOD / 0 BAD',
+    '> ALARMS: 0 ACTIVE',
+    '',
+    '> AWAITING OPERATOR_',
+  ].join('\n');
+  const ACTIVE_TEXT = [
+    '> OPERATOR: M.CATALANO',
+    '> HMI MODE ........... ENGAGED',
+    '> PALETTE: PHOSPHOR P1 GREEN',
+    '> ALL SYSTEMS NOMINAL',
+    '',
+    '> CLICK TO DISENGAGE_',
+  ].join('\n');
+  if (crtText) crtText.textContent = IDLE_TEXT;
+
+  const tickClock = () => {
+    if (clock) clock.textContent = new Date().toLocaleTimeString('en-US', { hour12: false });
+  };
+
+  const setMode = (on: boolean) => {
+    scadaOn = on;
+    document.documentElement.classList.toggle('scada', on);
+    toggles.forEach((t) => t.setAttribute('aria-pressed', String(on)));
+    if (crtText) crtText.textContent = on ? ACTIVE_TEXT : IDLE_TEXT;
+    document.dispatchEvent(new CustomEvent('forge:scada', { detail: { on } }));
+
+    if (on) {
+      applyTheme(SCADA_THEME);
+      document.title = 'SCADA-9000 :: CATALANO CONTROL';
+      tickClock();
+      clockTimer = window.setInterval(tickClock, 1000);
+    } else {
+      document.title = baseTitle;
+      window.clearInterval(clockTimer);
+      repickTheme();
+    }
+  };
+
+  toggles.forEach((el) => {
+    el.addEventListener('click', () => setMode(!scadaOn));
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        setMode(!scadaOn);
+      }
+    });
+  });
 }
 
 /* ------------------------------------------------------------------ */
@@ -358,6 +483,8 @@ function boot() {
   initCursor();
   initEmbers();
   initThemeShift();
+  initMorphCloudLazy();
+  initScada();
   ScrollTrigger.refresh();
 }
 

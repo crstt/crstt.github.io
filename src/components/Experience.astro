@@ -9,31 +9,41 @@ import { experience } from '../data/content';
       <h2 class="exp__title display" data-reveal>Where I’ve<br /><span class="exp__title-em">shipped</span></h2>
     </div>
 
-    <ol class="exp__list">
-      {experience.map((job) => (
-        <li class="exp__job" data-reveal data-theme={JSON.stringify(job.theme)}>
-          <div class="exp__no mono">{job.no}</div>
-          <div class="exp__main">
-            <div class="exp__row">
-              <h3 class="exp__company display">
-                {job.company}
-                {job.current && <span class="exp__live">Now</span>}
-              </h3>
-              <span class="exp__period mono">{job.period}</span>
+    <div class="exp__body">
+      <ol class="exp__list">
+        {experience.map((job) => (
+          <li class="exp__job" data-reveal data-theme={JSON.stringify(job.theme)}>
+            <div class="exp__no mono">{job.no}</div>
+            <div class="exp__main">
+              <div class="exp__row">
+                <h3 class="exp__company display">
+                  {job.company}
+                  {job.current && <span class="exp__live">Now</span>}
+                </h3>
+                <span class="exp__period mono">{job.period}</span>
+              </div>
+              <p class="exp__role">{job.role} <span class="exp__loc">— {job.location}</span></p>
+              <ul class="exp__bullets">
+                {job.bullets.map((b) => (
+                  <li set:html={b} />
+                ))}
+              </ul>
+              <div class="exp__stack">
+                {job.stack.map((t) => <span class="exp__tag">{t}</span>)}
+              </div>
             </div>
-            <p class="exp__role">{job.role} <span class="exp__loc">— {job.location}</span></p>
-            <ul class="exp__bullets">
-              {job.bullets.map((b) => (
-                <li set:html={b} />
-              ))}
-            </ul>
-            <div class="exp__stack">
-              {job.stack.map((t) => <span class="exp__tag">{t}</span>)}
-            </div>
-          </div>
-        </li>
-      ))}
-    </ol>
+          </li>
+        ))}
+      </ol>
+
+      <!-- Morphing point-cloud: one glowing sculpture per job (see morph-cloud.ts) -->
+      <div class="exp__cloudwrap" aria-hidden="true">
+        <div class="exp__cloud" data-cloud>
+          <canvas data-cloud-canvas></canvas>
+          <span class="exp__cloud-label mono" data-cloud-label></span>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -55,8 +65,52 @@ import { experience } from '../data/content';
     -webkit-text-stroke: 1.5px var(--ember);
   }
 
+  .exp__body {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .exp__cloudwrap {
+    display: none;
+  }
+  @media (min-width: 1100px) and (prefers-reduced-motion: no-preference) {
+    .exp__body {
+      grid-template-columns: minmax(0, 1fr) clamp(320px, 30vw, 520px);
+      gap: clamp(2rem, 4vw, 4rem);
+      align-items: stretch;
+    }
+    .exp__cloudwrap {
+      display: block;
+      position: relative;
+    }
+    .exp__cloud {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.4rem;
+    }
+    .exp__cloud canvas {
+      width: 100%;
+      height: min(72svh, 100%);
+      flex: 0 1 auto;
+    }
+    .exp__cloud-label {
+      color: var(--paper-faint);
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      text-align: center;
+    }
+    .exp__cloud-label.is-swap {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+
   .exp__list {
     list-style: none;
+    min-width: 0;
   }
   .exp__job {
     display: grid;
